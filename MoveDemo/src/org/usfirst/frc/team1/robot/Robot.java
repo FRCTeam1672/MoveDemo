@@ -76,18 +76,32 @@ public class Robot extends SampleRobot
     {
         robot.setSafetyEnabled(true); //MUST SET TO TRUE INORDER TO DRIVE
         
-        while (isOperatorControl() && isEnabled())//Keeps loop running while robot is enabled, this is important
-        {
-            robot.tankDrive(leftStick, rightStick); // drive with tank drive (2 joysticks)
-            Timer.delay(0.005);		// wait for a motor update time
-        }
+        driveThread.run(); //ALL THREADS WOULD BE CREATED HERE SO RUNNING AT SAME TIME.
+        //shootThread.run():
+        //suckThread.run();
     }
+    
+    /**
+     * THREADS PAST HERE
+     * Threads are amazing. Makes multiple things able to run at once.
+     */
+    Thread driveThread = new Thread(){
+        public void run()
+        {
+        	while (isOperatorControl() && isEnabled())//Keeps loop running while robot is enabled, this is important
+            {
+                robot.tankDrive(leftStick, rightStick); // drive with tank drive (2 joysticks)
+                Timer.delay(0.005);		// wait for a motor update time
+            }
+        }
+      };
+
 
     /**
      * Runs during test mode
      */
     public void test() 
     {
-    	
+    	System.out.print("ROBOT IS IN TEST MODE, GOOD LUCK.");
     }
 }
